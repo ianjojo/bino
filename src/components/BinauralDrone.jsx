@@ -1,13 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import './binaural.css'
 const frequencyPairs = [
-  { label: "110Hz - 112Hz", value: [110, 112], colors: ['90deg', '#ff8a00', '#ff0084'] },
-  { label: "220Hz - 224Hz", value: [220, 224], colors: ['40deg', '#2F3C7E', '#FBEAEB'] },
-  { label: "440Hz - 448Hz", value: [440, 448], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "addiction ", value: [110, 112], colors: ['90deg', '#ff8a00', '#ff0084'] },
+  { label: "cosmic", value: [438, 461], colors: ['40deg', '#2F3C7E', '#FBEAEB'] },
+  { label: "nirvanaz", value: [250, 253], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "excel", value: [261.63, 311.13], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "earthtone", value: [281, 278], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "focus", value: [80.90, 97.09], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "luv", value: [45, 67], colors: ['130deg', '#CCF381', '#4831D4'] },
+    { label: "Major Third (5:4)", value: [220, 275], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "Minor Third (6:5)", value: [220, 264], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "Tritone (7:5)", value: [220, 308], colors: ['130deg', '#CCF381', '#4831D4'] },
 ];
 
 function App() {
-const [isFirst, setIsFirst] = useState(true)
+  const [isFirst, setIsFirst] = useState(true)
+  const [volume, setVolume] = useState(50);
   const audioContextRef = useRef(null);
   const oscillator1Ref = useRef(null);
   const oscillator2Ref = useRef(null);
@@ -17,7 +25,9 @@ const [isFirst, setIsFirst] = useState(true)
   const [col1, setCol1] = useState("#FFF")
   const [col2, setCol2] = useState("#000")
   const [isStopped, setIsStopped] = useState(true);
-
+const handleVolumeChange = (event) => {
+  setVolume(event.target.value);
+};
   const canvasRef = useRef(null);
   const handlePairChange = (event) => {
     // stop();
@@ -44,40 +54,62 @@ const [isFirst, setIsFirst] = useState(true)
     play();
   }, [selectedPair])
 
+  const suspendAudioContext = () => {
+  if (audioContextRef.current) {
+    audioContextRef.current.suspend();
+  }
+};
+
+const resumeAudioContext = () => {
+  if (audioContextRef.current) {
+    audioContextRef.current.resume();
+  }
+};
+
   const play = () => {
-    setIsStopped(false);
-    const context = new AudioContext();
-    const oscillator1 = context.createOscillator();
-    oscillator1.type = "sine";
-    oscillator1.frequency.setValueAtTime(selectedPair.value[0], context.currentTime);
-    const gainNode1 = context.createGain();
-    gainNode1.gain.setValueAtTime(0.1, context.currentTime);
-    oscillator1.connect(gainNode1);
+  suspendAudioContext();
+  setIsStopped(false);
+  if (!audioContextRef.current) {
+    audioContextRef.current = new AudioContext();
+  }
+  const context = audioContextRef.current;
 
-    const oscillator2 = context.createOscillator();
-    oscillator2.type = "sine";
-    oscillator2.frequency.setValueAtTime(selectedPair.value[1], context.currentTime);
-    const gainNode2 = context.createGain();
-    gainNode2.gain.setValueAtTime(0.1, context.currentTime);
-    oscillator2.connect(gainNode2);
+  const oscillator1 = context.createOscillator();
+  oscillator1.type = "sine";
+  oscillator1.frequency.setValueAtTime(
+    selectedPair.value[0],
+    context.currentTime
+  );
+const gainNode1 = context.createGain();
+gainNode1.gain.setValueAtTime(volume / 100, context.currentTime);
+  oscillator1.connect(gainNode1);
 
-    const merger = context.createChannelMerger(2);
-    gainNode1.connect(merger, 0, 1);
-    gainNode2.connect(merger, 0, 0);
-    merger.connect(context.destination);
+  const oscillator2 = context.createOscillator();
+  oscillator2.type = "sine";
+  oscillator2.frequency.setValueAtTime(
+    selectedPair.value[1],
+    context.currentTime
+  );
+const gainNode2 = context.createGain();
+gainNode2.gain.setValueAtTime(volume / 100, context.currentTime);
+  oscillator2.connect(gainNode2);
 
-    oscillator1.start();
-    oscillator2.start();
+  const merger = context.createChannelMerger(2);
+  gainNode1.connect(merger, 0, 1);
+  gainNode2.connect(merger, 0, 0);
+  merger.connect(context.destination);
 
-    oscillator1Ref.current = oscillator1;
-    oscillator2Ref.current = oscillator2;
+  oscillator1.start();
+  oscillator2.start();
 
+  oscillator1Ref.current = oscillator1;
+  oscillator2Ref.current = oscillator2;
+};
 
-
-  };
 
   const stop = () => {
     setIsStopped(true)
+     resumeAudioContext();
     const oscillator1 = oscillator1Ref.current;
     const oscillator2 = oscillator2Ref.current;
 
@@ -107,7 +139,9 @@ const [isFirst, setIsFirst] = useState(true)
           />
           {pair.label}
         </label>
-      ))}
+       ))}
+      <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} />
+
       <button onClick={play}>Play</button>
       <button onClick={stop}>Stop</button>
         {!isStopped && <div className="gradient"

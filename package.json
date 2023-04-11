@@ -9,7 +9,9 @@
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
+    "react-range": "^1.8.14",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.2",
     "tone": "^14.7.77",
     "web-vitals": "^2.1.4"
   },
