@@ -1,8 +1,10 @@
 .gradient {
 
 
-  animation: gradient-animation 5s ease-in-out infinite;
+  animation: gradient-animation 1s ease-in-out infinite;
   border-radius: 50%;
+  filter: brightness(100%) contrast(150%) saturate(150%) blur(2px);
+  animation: filter 7s ease infinite;
 }
 
 @keyframes gradient-animation {
@@ -14,5 +16,17 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes filter {
+  0% {
+    filter: brightness(100%) contrast(150%) saturate(150%) blur(2px);
+  }
+  50% {
+    filter: brightness(90%) contrast(120%) saturate(120%) blur(12px);
+  }
+  100% {
+    filter: brightness(100%) contrast(150%) saturate(150%) blur(2px);
   }
 }

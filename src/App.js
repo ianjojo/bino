@@ -9,9 +9,21 @@ function App() {
 
 return (
   <div className="App">
+    <div className="maincontainer">
+
+      <div className="titlecontainer flex justify-between w-full align-bottom items-end">
+        
+        <h1 className="text-3xl font-bold">Hocus Focus</h1>
+        <h3 className="align-bottom italic">sounds to block it all out</h3>
+  </div>
+      <div className="subcontainer">
+
+
     <BinauralDrone />
   
- <AmbientSoundsDropdown />
+        <AmbientSoundsDropdown />
+              </div>
+        </div>
 
   </div>
 );

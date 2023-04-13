@@ -2,15 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import './binaural.css'
 const frequencyPairs = [
   { label: "addiction ", value: [110, 112], colors: ['90deg', '#ff8a00', '#ff0084'] },
-  { label: "cosmic", value: [438, 461], colors: ['40deg', '#2F3C7E', '#FBEAEB'] },
-  { label: "nirvanaz", value: [250, 253], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "excel", value: [261.63, 311.13], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "earthtone", value: [281, 278], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "focus", value: [80.90, 97.09], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "luv", value: [45, 67], colors: ['130deg', '#CCF381', '#4831D4'] },
-    { label: "Major Third (5:4)", value: [220, 275], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "Minor Third (6:5)", value: [220, 264], colors: ['130deg', '#CCF381', '#4831D4'] },
-  { label: "Tritone (7:5)", value: [220, 308], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "beta", value: [80, 95], colors: ['40deg', '#2F3C7E', '#FBEAEB'] },
+  { label: "relax", value: [70, 78], colors: ['130deg', '#CCF381', '#4831D4'] },
+  { label: "excel", value: [40, 52], colors: ['50deg', '#949398FF', '#F4DF4EFF'] },
+
+  { label: "focus", value: [80.90, 97.09], colors: ['230deg', '#97BC62FF', '#2C5F2D'] },
+  { label: "luv", value: [45, 67], colors: ['10deg', '#CBCE91FF', '#EA738DFF'] },
+
 ];
 
 function App() {
@@ -127,8 +125,14 @@ gainNode2.gain.setValueAtTime(volume / 100, context.currentTime);
   };
 
   return (
-    <div>
-       
+    <>
+      <div className="flex flex-col p-12 bg-gray-300">
+             <h1 className="text-xl pb-20">Binaural Beats</h1>
+      <div className="container">
+  
+      <div className="list pb-10">
+        
+     
        {frequencyPairs.map((pair) => (
         <label key={pair.value}>
           <input
@@ -140,16 +144,28 @@ gainNode2.gain.setValueAtTime(volume / 100, context.currentTime);
           {pair.label}
         </label>
        ))}
-      <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} />
+             </div>
+      {/* <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} /> */}
 
-      <button onClick={play}>Play</button>
-      <button onClick={stop}>Stop</button>
+    
         {!isStopped && <div className="gradient"
     
       
-        style={{ border: "1px solid black", height: "300px", width: "300px",  background: `linear-gradient(${deg},${col1}, ${col2})` }}
+        style={{height: "150px", width: "150px", background: `linear-gradient(${deg},${col1}, ${col2})` }}
+        
       ></div>}
+          {isStopped && <div className="gradient"
+    
+      
+        style={{  height: "150px", width: "150px",  }}
+        
+      ></div>}
+ 
     </div>
+        { isStopped && <button onClick={play}>Play</button>}
+        { !isStopped && <button onClick={stop}>Stop</button>}
+        </div>
+      </>
   );
 }
 
