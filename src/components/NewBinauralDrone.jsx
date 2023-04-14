@@ -1,28 +1,38 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./binaural.css";
+import Select from "react-select";
 const frequencyPairs = [
   {
-    label: "addiction ",
-    value: [110, 112],
+    label: "sleep/relax (2hz)",
+    value: [60, 62],
     colors: ["90deg", "#ff8a00", "#ff0084"],
   },
-  { label: "beta", value: [80, 95], colors: ["40deg", "#2F3C7E", "#FBEAEB"] },
-  { label: "relax", value: [70, 78], colors: ["130deg", "#CCF381", "#4831D4"] },
   {
-    label: "excel",
-    value: [40, 52],
+    label: "creative (8hz)",
+    value: [70, 78],
+    colors: ["130deg", "#CCF381", "#4831D4"],
+  },
+  {
+    label: "anxiety (12hz)",
+    value: [50, 62],
     colors: ["50deg", "#949398FF", "#F4DF4EFF"],
+  },
+  {
+    label: "concentrate (19hz)",
+    value: [80, 99],
+    colors: ["40deg", "#2F3C7E", "#FBEAEB"],
   },
 
   {
-    label: "focus",
-    value: [80.9, 97.09],
-    colors: ["230deg", "#97BC62FF", "#2C5F2D"],
-  },
-  {
-    label: "luv",
+    label: "love (22hz)",
     value: [45, 67],
     colors: ["10deg", "#CBCE91FF", "#EA738DFF"],
+  },
+
+  {
+    label: "memory (30hz)",
+    value: [67, 97],
+    colors: ["230deg", "#97BC62FF", "#2C5F2D"],
   },
 ];
 
@@ -44,22 +54,25 @@ function App() {
   const canvasRef = useRef(null);
   const handlePairChange = (event) => {
     // stop();
-    const newPair = frequencyPairs.find(
-      (pair) => pair.value.toString() === event.target.value
-    );
+    // const newPair = frequencyPairs.find(
+    //   (pair) => pair.value.toString() === event.target.value
+    // );
+    console.log(event);
+    const newPair = event;
+    console.log(newPair);
     setSelectedPair(newPair);
-
+    // console.log(newPair)
     setDeg(newPair.colors?.[0]);
     setCol1(newPair.colors?.[1]);
     setCol2(newPair.colors?.[2]);
-    // play();
+    console.log(selectedPair);
   };
 
   useEffect(() => {
     if (isFirst) {
+      console.log(isFirst);
       setIsFirst(false);
       stop();
-
       return;
     }
     stop();
@@ -139,45 +152,40 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col p-12 bg-gray-300'>
-        <h1 className='text-xl pb-20'>Binaural Beats</h1>
+      <div className='flex flex-col p-12 bg-gray-300 rounded-l-2xl w-[295px]'>
+        <h1 className='text-xl pb-4'>Binaural Beats</h1>
         <div className='container'>
-          <div className='list pb-10'>
-            {frequencyPairs.map((pair) => (
-              <label key={pair.value}>
-                <input
-                  type='radio'
-                  value={pair.value.toString()}
-                  checked={
-                    selectedPair.value.toString() === pair.value.toString()
-                  }
-                  onChange={handlePairChange}
-                />
-                {pair.label}
-              </label>
-            ))}
+          <div className='list pb-2'>
+            <Select
+              options={frequencyPairs}
+              value={selectedPair}
+              onChange={handlePairChange}
+            />
           </div>
           {/* <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} /> */}
-
-          {!isStopped && (
-            <div
-              className='gradient'
-              style={{
-                height: "150px",
-                width: "150px",
-                background: `linear-gradient(${deg},${col1}, ${col2})`,
-              }}
-            ></div>
-          )}
-          {isStopped && (
-            <div
-              className='gradient'
-              style={{ height: "150px", width: "150px" }}
-            ></div>
-          )}
         </div>
         {isStopped && <button onClick={play}>Play</button>}
         {!isStopped && <button onClick={stop}>Stop</button>}
+        {!isStopped && (
+          <div className='flex justify-center'>
+            <div
+              className='gradient'
+              style={{
+                height: "140px",
+                width: "140px",
+                background: `linear-gradient(${deg},${col1}, ${col2})`,
+              }}
+            ></div>
+          </div>
+        )}
+        {isStopped && (
+          <div className='flex justify-center'>
+            <div
+              className='gradient'
+              style={{ height: "140px", width: "140px" }}
+            ></div>
+          </div>
+        )}
       </div>
     </>
   );

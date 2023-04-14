@@ -1,6 +1,8 @@
 .gradient {
-
-
+  z-index: 0;
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
   animation: gradient-animation 1s ease-in-out infinite;
   border-radius: 50%;
   filter: brightness(100%) contrast(150%) saturate(150%) blur(2px);
