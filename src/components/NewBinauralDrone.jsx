@@ -152,7 +152,7 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col p-12 bg-gray-300 rounded-l-2xl w-[295px]'>
+      <div className='flex flex-col p-6 lg:p-12 bg-gray-300 lg:rounded-l-2xl lg:w-[295px]'>
         <h1 className='text-xl pb-4'>Binaural Beats</h1>
         <div className='container'>
           <div className='list pb-2'>

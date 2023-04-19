@@ -47,10 +47,6 @@ button:active {
   box-shadow: 3px 2px 12px 1px rgba(0, 0, 0, 0.24);
 }
 
-.subcontainer {
-  display: flex;
-}
-
 .ambienceimg {
   height: 140px;
   width: 140px;

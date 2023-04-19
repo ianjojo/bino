@@ -139,8 +139,8 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col p-12 bg-gray-300'>
-        <h1 className='text-xl pb-20'>Binaural Beats</h1>
+      <div className='flex flex-col p-6 lg:p-12 bg-gray-300'>
+        <h1 className='text-xl pb-2 lg:pb-20'>Binaural Beats</h1>
         <div className='container'>
           <div className='list pb-10'>
             {frequencyPairs.map((pair) => (
